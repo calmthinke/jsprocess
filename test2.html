@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress steps</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* css 变量用法 :
+  1.用--开头
+  2.使用变量时：var(变量名)；
+  */
+  :root {
+    --color--: #dededf;
+    --color_active: #2396ef;
+    --font_color: #535455;
+    --default_color: #fff;
+  }
+
+  /*在浏览器里面居中显示 */
+  body,
+  html {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+  }
+
+  .container {
+    width: 100%;
+    text-align: center;
+  }
+
+  .progress-container {
+    width: 100%;
+    width: 350px;
+
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    position: relative;
+
+  }
+
+  .progress-container::before {
+    content: "";
+    width: 100%;
+    background-color: var(--color--);
+  }
+
+  .progress,
+  .progress-container::before {
+    height: 5px;
+    border-radius: 2px;
+
+    position: absolute;
+    left: 0;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    z-index: -1;
+  }
+
+  .progress {
+    background-color: var(--color_active);
+    transition: all .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .circle {
+    border: 4px solid var(--color--);
+    width: 40px;
+    height: 40px;
+    color: var(--font_color);
+    border-radius: 50%;
+    background-color: var(--default_color);
+    transition: all .35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* 让数字对齐 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .circle.active {
+    border-color: var(--color_active);
+  }
+
+  .prev,
+  .next {
+    /* outline 与 border 区别
+        outline 不占空间
+     */
+    outline: none;
+    border: none;
+
+    display: inline-block;
+    background-color: var(--color--);
+    padding: 8px 16px;
+    border-radius: 5px;
+
+    color: var(--font_color);
+    transition: all .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+  }
+
+  .prev:active,
+  .next:active {
+    transform: scale(.9);
+  }
+
+  .prev.disabled,
+  .next.disabled {
+    cursor: not-allowed;
+
+    background-color: var(--color--);
+    color: var(--font_color);
+  }
+
+  .prev.active,
+  .next.active {
+    background-color: var(--color_active);
+    color: var(--default_color);
+  }
+
+  .next {
+    margin-left: 15px;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <div class="progress-container">
+      <div class="progress" id="progress"></div>
+      <div class="circle active">1</div>
+      <div class="circle">2</div>
+      <div class="circle">3</div>
+      <div class="circle">4</div>
+    </div>
+    <button class="prev disabled" id="prev" type="button">上一步</button>
+    <button class="next active" id="next" type="button">下一步</button>
+  </div>
+
+
+  <!-- <script>
+    // 判断是否含此样式
+    /**
+     *<span class="a b c"></span>
+
+      const span=document.querySelector('span')
+     let calsses=span.classList
+     let rea=classes.contains('c')
+      rea=true---存在
+      rea=faluse --- 不存在
+     */
+    const $ = v => document.querySelector(v);
+    const $$ = v => document.querySelectorAll(v);
+    const prevBtn = document.querySelector('#prev')
+    const nextBtn = document.queryCommandState('#next')
+    const progress = document.querySelector('#progress')
+    const cirs = document.querySelectorAll('.circle')
+
+    let min = 0
+    let max = cirs.length - 1//why
+    let currentActive = 0
+
+    // nextBtn.addEventListener("click", () => {
+    //   if (nextBtn.classList.contains('disabled')) {
+    //     return;
+    //   }
+
+    //   if (currentactive >= max - 1) {
+    //     handleClass(nextBtn).addClass("disabled").removeClass("active");
+    //   }
+
+    //   if (currentactive <= max - 1) {
+    //     currentactive++
+    //   }
+    //   if (currentactive > 0) {
+    //     handleClass(prevBtn).addClass("active").removeClass("disabled");
+    //   }
+    //   update()
+    // })
+
+
+
+
+    // prev.addEventListener("click", () => {
+    //   if (prevBtn.classList.contains('disabled')) {
+    //     return;
+    //   }
+    //   if (currentactive <= 1) {
+    //     handleClass(prevBtn).addClass("disabled").removeClass("active");
+    //   }
+
+    //   if (currentactive > 0) {
+    //     currentactive--
+    //   }
+    //   if (currentactive <= max - 1) {
+    //     handleClass(nextBtn).addClass("active").removeClass("disabled");
+    //   }
+    //   update()
+    // })
+
+    nextBtn.addEventListener("click", () => {
+      if (nextBtn.classList.contains('disabled')) return;
+      if (currentActive >= max - 1) {
+        // currentActive = min;
+        handleClass(nextBtn).addClass("disabled").removeClass("active");
+      }
+      if (currentActive <= max - 1) {
+        currentActive++;
+      }
+      if (currentActive > 0) {
+        handleClass(prevBtn).addClass("active").removeClass("disabled");
+      }
+      update();
+    });
+    prevBtn.addEventListener("click", () => {
+      if (prevBtn.classList.contains('disabled')) return;
+      if (currentActive <= 1) {
+        // currentActive = max -  1;
+        handleClass(prevBtn).addClass("disabled").removeClass("active");
+      }
+      if (currentActive > 0) {
+        currentActive--;
+      }
+      if (currentActive <= max - 1) {
+        handleClass(nextBtn).addClass("active").removeClass("disabled");
+      }
+      update();
+    });
+    function handleClass(el) {
+      let methods = {
+        addClass,
+        removeClass
+      };
+      function addClass(c) {
+        el.classList.add(c);
+        return methods;
+      };
+      function removeClass(c) {
+        el.classList.remove(c);
+        return methods;
+      }
+      return methods
+    }
+
+    function update() {
+      circleElements.forEach((item, index) => {
+        if (index <= currentActive) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+      progress.style.width = (100 / max * currentActive).toFixed(4) + '%';
+    }
+
+
+  </script> -->
+  <!-- 标准答案 -->
+  <script>
+
+    const $ = v => document.querySelector(v);
+    const $$ = v => document.querySelectorAll(v);
+    const prevBtn = $("#prev");
+    const nextBtn = $("#next");
+    const progress = $("#progress");
+    const circleElements = $$(".circle");
+    const min = 0, max = circleElements.length - 1;
+    let currentActive = 0;
+    nextBtn.addEventListener("click", () => {
+      if (nextBtn.classList.contains('disabled')) return;
+      if (currentActive >= max - 1) {
+        // currentActive = min;
+        handleClass(nextBtn).addClass("disabled").removeClass("active");
+      }
+      if (currentActive <= max - 1) {
+        currentActive++;
+      }
+      if (currentActive > 0) {
+        handleClass(prevBtn).addClass("active").removeClass("disabled");
+      }
+      update();
+    });
+    prevBtn.addEventListener("click", () => {
+      if (prevBtn.classList.contains('disabled')) return;
+      if (currentActive <= 1) {
+        // currentActive = max -  1;
+        handleClass(prevBtn).addClass("disabled").removeClass("active");
+      }
+      if (currentActive > 0) {
+        currentActive--;
+      }
+      if (currentActive <= max - 1) {
+        handleClass(nextBtn).addClass("active").removeClass("disabled");
+      }
+      update();
+    });
+    function handleClass(el) {
+      let methods = {
+        addClass,
+        removeClass
+      };
+      function addClass(c) {
+        el.classList.add(c);
+        return methods;
+      };
+      function removeClass(c) {
+        el.classList.remove(c);
+        return methods;
+      }
+      return methods
+    }
+    function update() {
+      circleElements.forEach((item, index) => {
+        if (index <= currentActive) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+      progress.style.width = (100 / max * currentActive).toFixed(4) + '%';
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .box {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 50%;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pannel {
+    width: 60vw;
+    height: 60vw;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    border-radius: 50px;
+    margin: 10px;
+
+    flex: 0.5;
+
+    transition: all 1s;
+
+    overflow: hidden;
+
+  }
+
+  h3 {
+    text-align: center;
+    line-height: 60vw;
+    color: pink;
+
+    font-size: 24px;
+  }
+
+  .active {
+    flex: 5;
+  }
+</style>
+
+
+
+<body>
+
+  <div class="box">
+    <div class="pannel active" style="background-image: url(./imagines/1.jpg);">
+      <h3>PIC ONE</h3>
+    </div>
+
+    <div class="pannel" style="background-image: url(./imagines/3.jpg);">
+      <h3>PIC ONE</h3>
+    </div>
+
+
+    <div class="pannel" style="background-image: url(./imagines/2.jpg);">
+      <h3>PIC ONE</h3>
+    </div>
+
+
+    <div class="pannel" style="background-image: url(./imagines/3.jpg);">
+      <h3>PIC ONE</h3>
+    </div>
+
+    <div class="pannel" style="background-image: url(./imagines/1.jpg);">
+      <h3>PIC ONE</h3>
+    </div>
+
+    <div class="pannel" style="background-image: url(./imagines/2.jpg);">
+      <h3>PIC ONE</h3>
+    </div>
+
+
+  </div>
+
+  <script>
+    const ps = document.querySelectorAll('.box .pannel')
+    // console.log(ps);
+    ps.forEach((item) => {
+
+      item.addEventListener('click', function () {
+        //1.删除之前的
+        [].filter.call(item.parentElement.children, el => el !== item).forEach(el => el.classList.remove('active'));
+
+        //2.添加当前的
+        item.classList.add('active')
+
+      })
+    })
+  </script>
+</body>
+
+</html>

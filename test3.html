@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日志页面</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
+    body,
+    html {
+      background-color: black;
+      overflow-x: hidden;
+    }
+
+    /* 可见区域 */
+    .show-nav {
+      transform: rotate(-20deg);
+    }
+
+    .page-container {
+      background-color: #fafafa;
+      transition: all .4s ease-in-out;
+
+      padding: 60px;
+      /* 改变变形的原点 */
+      transform-origin: left top;
+      width: 100%;
+      /* 设置最小高度的意义 */
+      min-height: 100vh;
+    }
+
+    /* 按钮区域 */
+    .circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+
+      background-color: #2396ef;
+      position: relative;
+      transition: all .4s ease-in-out;
+    }
+
+    .open {
+      background-image: url('./imagines/close.svg');
+      left: 50%;
+    }
+
+    .open.hidden {
+      left: -60%;
+    }
+
+    .close {
+      background-image: url('./imagines/menu.svg');
+      left: 60%;
+    }
+
+    .close.hidden {
+      transform: rotate(90deg);
+      transform-origin: top left;
+      left: 30%;
+    }
+
+    .circle i:hover {
+      transform: scale(1.2);
+    }
+
+    .circle i {
+      /* 行内元素，宽高不生效 */
+      position: absolute;
+      top: 60%;
+
+      width: 35px;
+      height: 35px;
+
+
+
+      background-size: 100%;
+      background-repeat: no-repeat;
+
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .circle-container {
+      position: fixed;
+      left: -75px;
+      top: -75px;
+    }
+
+    /* 内容区域 */
+    .page-container .page-content h1 {
+      color: #2396ef;
+      font-size: 26px;
+      letter-spacing: 2px;
+    }
+
+    .page-container .page-content small {
+      color: #6e706e;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .page-container .page-content p {
+      text-indent: 2em;
+      color: #535455;
+      line-height: 2;
+      margin-bottom: 15px;
+    }
+
+    .page-container .page-content img {
+      border-radius: 15px;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    /* 不可见区域 */
+    .navList {
+      position: fixed;
+      bottom: 80px;
+      left: 0;
+    }
+
+    .navList ul li {
+      list-style: none;
+      padding-left: 15px;
+      margin: 20px 0;
+      transition: transform .4s ease-in-out;
+      transform: translateX(-100%);
+    }
+
+    .navList ul li::before {
+      content: "";
+      display: inline-block;
+
+      vertical-align: middle;
+      width: 25px;
+      height: 25px;
+      margin-right: 15px;
+
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .navList ul li:first-child::before {
+      background-image: url('./imagines/Website.png');
+    }
+
+    .navList ul li:nth-child(2)::before {
+      background-image: url('./imagines/project.png');
+    }
+
+    .navList ul li:last-child::before {
+      background-image: url('./imagines/github.png');
+    }
+
+    .navList ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .page-container.show-nav+.navList ul {
+      transform: translateX(15px);
+    }
+
+    .page-container.show-nav+.navList ul li {
+      transform: translateX(0);
+      transition-delay: .4s;
+    }
+
+    .page-container.show-nav+.navList ul li+li {
+      margin-left: 10px;
+    }
+
+    .page-container.show-nav+.navList ul li+li+li {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 可见区域 -->
+  <div class="page-container">
+    <!-- 按钮区域 -->
+    <div class="circle-container">
+      <div class="circle">
+        <i class="open hidden" id="open"></i>
+        <i class="close" id="close"></i>
+      </div>
+    </div>
+    <!-- 内容区域 -->
+    <div class="page-content">
+      <h1>朝闻雨记</h1>
+      <small>--夕水(2013年9月4日作)</small>
+      <p>
+        初起，观天，当中云暗，忽觉已而须有雨下。果未其然，须臾，雨翻盆而至，林中道上，从漉漉更浥浥。闻其声，似万马奔腾而至，有波涛汹汹之势，有浪雪滚滚之势，始惊。
+      </p>
+      <p>
+        当是时也，道上成河，林中为汤，屋舍渗露，土地溜泥。天上旭旭，下潾潾，白云连天，清珠连道。阡陌芳草，惟以新得乳洗，即林林使人不尽心观矣。山嶙嶙，树葱葱，花艳艳，叶青青，而亦浅浅，是以万物之处无一不见淋。上危楼，观尽天下，阵阵风狂啸而至，道更浏耳！看风何其狂，雨何其暴矣！旖旎之木，岿然之山，澹澹之水，似有意迎之。故以为天下之美，莫过于乃尔！欸哉！欸哉！
+      </p>
+      <p>
+        <img src="https://www.eveningwater.com/static/image/1.jpg" alt="图片加载中">
+      </p>
+      <p>
+        已而，雨自急迁淅沥，万物却依旧浥。雨纷纷似雪落，花于地。乃吾知之念非矣。固以为雨且狂一时，乃吾观之。以为闻其声而知其物，看其物而识其形，雨亦乃尔，惑矣。吾即闻声，却亦知物，而吾看物，不可知形也，何其哀矣。其缘吾之不胜书邪？其缘吾之望所失邪？非也。吾岂不读书邪？亦不是也。盖书不可不读耳！一日不读，书不知何用矣。吾必爱书，吾之所以爱书，惟缘吾以为爱书者，必爱学也，方可成事。书之不爱，学且何爱，事且成乎？
+      </p>
+      <p>
+        雨终时，道已忽忽有漉矣，日从东方出，云失暗，而更白，是以吾知晴方至，天渐明，地渐清，恍若地洒于天。于是吾踏积露而去，见叶如新，树亦焕然，可知天非无情矣。何则天地无情，无情何在？草木飘零，芬芳枯损，自然之理也。孰谓之无情焉？其雨狂而无情邪？其风暴而无情邪？皆不是也。夫天地之无情，由人而生，人若无情，天且有情邪？
+      </p>
+      <p>
+        朝雨之事，使吾有所得。吾知天非无情，无情于己欤。吾亦知须爱书，爱书必读之，使吾之观开也。故作文以抒怀，九月四日记。
+      </p>
+    </div>
+  </div>
+
+  <!-- 不可见区域 -->
+  <nav class="navList" id="navList">
+    <ul>
+      <li><a href="http://www.eveningwater.com" target="_blank" rel="noopener noreferrer">个人网站</a></li>
+      <li><a href="http://www.eveningwater.com/my-web-projects/" target="_blank" rel="noopener noreferrer">我的项目</a></li>
+      <li><a href="http://github.com/eveningwater" target="_blank" rel="noopener noreferrer">github</a></li>
+    </ul>
+  </nav>
+
+  <script>
+    const openBtn = document.querySelector('#open')
+    const closeBtn = document.querySelector("#close")
+    const pageContainer = document.querySelector('.page-container')
+
+    closeBtn.addEventListener('click', () => {
+      closeBtn.classList.add('hidden')
+      openBtn.classList.remove('hidden')
+
+      pageContainer.classList.add('show-nav')
+    })
+    openBtn.addEventListener('click', () => {
+      openBtn.classList.add('hidden')
+      closeBtn.classList.remove('hidden')
+
+      pageContainer.classList.remove('show-nav')
+    })
+
+  </script>
+</body>
+
+</html>
