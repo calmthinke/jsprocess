@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOading changing</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body,
+    html {
+      /* display: flex;
+      align-items: center;
+      justify-content: center; */
+      overflow: hidden;
+
+      /* width: 100%; */
+      height: 100%;
+
+      overflow: hidden;
+    }
+
+    .bacground {
+      background-color: pink;
+      width: 200px;
+      height: 200px;
+      width: 100%;
+      height: 100%;
+      background-image: url(./imagines/2.jpg);
+      background-size: cover;
+
+      background-repeat: no-repeat;
+      /* 作用---添加滤镜 */
+      filter: blur(0);
+    }
+
+    .loading-text {
+      color: #fff;
+      font-size: 50px;
+
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      /* 调整文字居中 */
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bacground"></div>
+  <p class="loading-text"></p>
+</body>
+<script>
+  const scale = (n, inMin, inMax, outerMin, outerMax) => (n - inMin) * (outerMax - outerMin) / (inMax - inMin) + outerMin;
+  const text = document.querySelector('.loading-text')
+  const bg = document.querySelector('.bacground')
+
+  let load = 0;
+  let timer = 0;
+  let blurryLoadingHandler = function () {
+    load++;
+    if (load > 99) {
+      clearTimeout(timer)
+    } else {
+      timer = setTimeout(blurryLoadingHandler, 20)
+    }
+    text.innerHTML = `页面加载${load}%`
+    text.style.opacity = scale(load, 0, 100, 1, 0);
+    bg.style.filter = `blur(${scale(load, 0, 100, 20, 0)}px)`;
+
+  }
+  blurryLoadingHandler()
+</script>
+
+</html>
