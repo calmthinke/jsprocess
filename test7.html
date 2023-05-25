@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>split panel</title>
+  <!-- css模块 -->
+  <style>
+    /* css变量 */
+    :root {
+      --speed: 1000ms;
+      --hover-width: 80%;
+      --leave-width: 20%;
+      --left-bg-color: rgba(160, 197, 245, .8);
+      --right-bg-color: rgba(227, 184, 247, 0.7);
+      --left-btn-color: #4497fe;
+      --right-btn-color: #b313e4;
+      --default-color: #fff;
+    }
+
+    /* 一般的全局格式 */
+    * {
+      margin: 0;
+      padding: 0;
+
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .split {
+      width: 50%;
+      height: 100%;
+      position: absolute;
+
+      overflow: hidden;
+      /* 背景图对齐方式 */
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      /* 用浮动来对齐 */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container>.split-left {
+      left: 0;
+      background-image: url("./imagines/1.jpg");
+    }
+
+    .container>.split-right {
+      right: 0;
+      background-image: url("./imagines/2.jpg");
+    }
+
+    .container>.split-left,
+    .container>.split-left::before,
+    .container>.split-right,
+    .container>.split-right::before {
+      transition: all var(--speed) ease-in-out;
+    }
+
+    .container>.split>h3 {
+      font-size: 2rem;
+      color: var(--default-color);
+      /* 合并连续空格符，不换行 */
+      white-space: nowrap;
+    }
+
+    .container>.split>.btn {
+      text-decoration: none;
+
+      border: .4rem solid var(--default-color);
+      border-radius: 8px;
+
+      width: 15rem;
+      padding: 1rem;
+
+      background-color: transparent;
+      font-size: 1.5rem;
+
+      color: var(--default-color);
+
+      text-align: center;
+      letter-spacing: 2px;
+
+      position: relative;
+      /* z-index: 2; */
+      top: 10px;
+      /* 全大写属性 */
+      text-transform: uppercase;
+    }
+
+    .container>.split-left>.btn:hover {
+      background-color: var(--left-btn-color);
+      border-color: var(--left-btn-color);
+    }
+
+    .container>.split-right>.btn:hover {
+      background-color: var(--right-btn-color);
+      border-color: var(--right-btn-color);
+    }
+
+
+    /* 伪类元素的作用 */
+    .container>.split::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .container>.split-left::before {
+      background-color: var(--left-bg-color);
+    }
+
+    .container>.split-right::before {
+      background-color: var(--right-bg-color);
+    }
+
+    /* 还没实现的效果，交互后实现 */
+    /* 鼠标悬停后到每一个界面上，两部分宽度的改变 */
+    .container.hover-left>.split-left {
+      width: var(--hover-width);
+    }
+
+    .container.hover-left>.split-right {
+      width: var(--leave-width);
+    }
+
+    .container.hover-right>.split-left {
+      width: var(--leave-width);
+    }
+
+    .container.hover-right>.split-right {
+      width: var(--hover-width);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="split-left split">
+      <h3>the left panel</h3>
+      <a href="#" class="btn" target="blank">hello</a>
+    </div>
+    <!-- target 属性是否保留原网页跳转 -->
+    <div class="split-right split">
+      <h3>the right panel</h3>
+      <a href="#" class="btn" target="blank">world</a>
+    </div>
+
+  </div>
+
+  <!-- js模块 -->
+  <script>
+
+    const container = document.querySelector('.container')
+    const leftSplit = document.querySelector('.split-left')
+    const rightSplit = document.querySelector('.split-right')
+
+
+
+    //元素身上挂载函数实现添加移除样式
+    HTMLElement.prototype.addClass = function (className) {
+      this.classList.add(className);
+    };
+
+    HTMLElement.prototype.removeClass = function (className) {
+      this.classList.remove(className);
+    }
+    //封装函数
+    const on = (el, type, handler) => {
+      if (el && type && handler) {
+        el.addEventListener(type, handler);
+      }
+    }
+
+    leftSplit.addEventListener('mouseenter', () => {
+      container.classList.add('hover-left')
+    })
+    // on(leftSplit, 'mouseenter', () => container.classList.add('hover-left'));
+    on(leftSplit, 'mouseleave', () => container.removeClass('hover-left'));
+
+    on(rightSplit, 'mouseenter', () => container.addClass('hover-right'));
+    on(rightSplit, 'mouseleave', () => container.removeClass('hover-right'));
+
+
+
+
+
+  </script>
+</body>
+
+</html>
